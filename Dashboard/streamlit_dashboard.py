@@ -1,7 +1,8 @@
 import streamlit as st
 import streamlit_extras.altex
 from streamlit_shap import st_shap
-from streamlit_extras.altex import bar_chart, scatter_chart, line_chart, chart
+from streamlit_extras.altex import bar_chart, scatter_chart
+from streamlit_extras.add_vertical_space import add_vertical_space
 import requests
 import time
 import pandas as pd
@@ -56,7 +57,11 @@ def accueil():
                 st.write("Votre demande de prêt n'a pas été acceptée.")
 
             # Afficher la jauge avec le score du client
-            score = st.session_state.response.json()['score']
+            score = st.session_state.response.json()['score'][index]
+            if score > 0.5 :
+                color = 'red'
+            else:
+                color = 'green'
 
             fig = go.Figure(go.Indicator(
                             mode = "gauge+number",
@@ -65,11 +70,11 @@ def accueil():
                             title = {'text': "Score prêt", 'font': {'size': 24}},
                             gauge = {
                                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
-                                'bar': {'color': "black", 'thickness': 1},
+                                'bar': {'color': color, 'thickness': 1},
                                 'borderwidth': 2,
                                 'bordercolor': "black",
                                 'threshold': {
-                                    'line': {'color': "red", 'width': 3},
+                                    'line': {'color': "black", 'width': 3},
                                     'thickness': 1,
                                     'value': 50}}))
 
@@ -80,14 +85,26 @@ def accueil():
 
 
 def feature_imp():
+
+    # Récupération des données via la requête
     all_data = pd.DataFrame(st.session_state.response.json()['all_client_val'], columns=st.session_state.response.json()['all_client_col'])
     shap_values = st.session_state.response.json()['shap_val']
     expected_value = st.session_state.response.json()['expected_val']
-    fig2 = shap.force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
-    st_shap(fig2, width=900)
+
+    # Création du summary plot de feature importance globale
+    fig2 = shap.summary_plot(np.array(shap_values), all_data,
+                             feature_names=all_data.columns, plot_type='bar', max_display=7)
+    st.header("Données les plus importantes pour le modèle")
+    st_shap(fig2, width=1000)
+
+    # Création du force plot de feature importance locale
+    fig3 = shap.force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
+    st.header("Influence des données sur votre score")
+    st_shap(fig3, width=900)
 
 
 def comparison_graphs():
+
     ext_values = st.session_state.response.json()['comp_graphs'][0]
     ext_feature = ['Ext1', 'Ext2', 'Ext3', 'Ext1', 'Ext2', 'Ext3']
     ext_clients = ['client', 'client', 'client', 'mean', 'mean', 'mean']
@@ -121,20 +138,42 @@ def comparison_graphs():
 
 
 def bivar_graphs():
+    index = st.session_state.response.json()['index']
+    scores = st.session_state.response.json()['score']
     ext1 = st.session_state.response.json()['bivar_graphs'][0]
     ext2 = st.session_state.response.json()['bivar_graphs'][1]
     ext3 = st.session_state.response.json()['bivar_graphs'][2]
     target = st.session_state.response.json()['prediction']
-    df_bivar = pd.DataFrame(zip(ext1, ext2, ext3, target), columns = ['Ext1', 'Ext2', 'Ext3', 'Prediction'])
+    df_bivar = pd.DataFrame(zip(ext1, ext2, ext3, scores), columns = ['Ext1', 'Ext2', 'Ext3', 'Score'])
 
     scatter_chart(
         data = df_bivar,
         x="Ext1",
         y="Ext2",
-        color="Prediction:N",
+        color="Score:Q",
         title="A beautiful scatter chart",
-        height = 1000,
-        width = 1000
+        height = 600,
+        width = 600
+    )
+
+    scatter_chart(
+        data=df_bivar,
+        x="Ext2",
+        y="Ext3",
+        color="Score:Q",
+        title="A beautiful scatter chart",
+        height=600,
+        width=600
+    )
+
+    scatter_chart(
+        data=df_bivar,
+        x="Ext3",
+        y="Ext1",
+        color="Score:Q",
+        title="A beautiful scatter chart",
+        height=600,
+        width=600
     )
 
 
