@@ -16,21 +16,20 @@ import shap
 app = Flask(__name__)
 
 
-
 class API:
 
     def __init__(self):
-        self.data = pd.read_csv('df_train.csv')
+        self.data = pd.read_csv('Data/df_train.csv')
         self.model = joblib.load('models/lgb_opti.pkl')
 
-    def score(self, index):
+    def score(self):
         """
         Calcule le score client, qui correspond à la probabilité que le client ne rembourse pas le prêt,
         calculée grâce à notre modèle.
         :param index: Index de la ligne correspondant à l'identifiant entré par l'utilisateur.
         """
 
-        score_client = self.model.predict_proba(self.data.iloc[index].drop(['TARGET', 'SK_ID_CURR'], axis=1))[0,1]
+        score_client = self.model.predict_proba(self.data.drop(['TARGET', 'SK_ID_CURR'], axis=1))[:, 1].tolist()
         return score_client
 
     def prediction(self):
@@ -109,7 +108,7 @@ class API:
             # Calculer le résultat de la demande de prêt
             predict = self.prediction()
             # Calculer le score (probabilité) du client
-            predict_score = self.score(ind)
+            predict_score = self.score()
 
             # Données pour l'affichage des graphs de comparaison entre clients
             ext_sources, days_emp = self.clients_comparison(input_id)
