@@ -1,6 +1,5 @@
 {
     "taskDefinitionArn": "arn:aws:ecs:eu-west-3:924671199804:task-definition/sample-fargate:1",
-    "LogDriver" : "awslogs",
     "containerDefinitions": [
         {
             "name": "fargate-app",
@@ -26,6 +25,14 @@
             "volumesFrom": []
         }
     ],
+     "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "awslogs-wordpress",
+                    "awslogs-region": "eu-west-3",
+                    "awslogs-stream-prefix": "awslogs-example"
+                },
     "family": "sample-fargate",
     "networkMode": "awsvpc",
     "revision": 1,
