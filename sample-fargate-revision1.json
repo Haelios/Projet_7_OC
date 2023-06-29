@@ -50,5 +50,6 @@
     "memory": "512",
     "registeredAt": "2023-06-29T06:16:35.853Z",
     "registeredBy": "arn:aws:iam::924671199804:root",
+    "executionRoleArn": "arn:aws:iam::924671199804:role/ecsTaskExecutionRole",
     "tags": []
 }
