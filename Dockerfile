@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Trigger
+# Triggers
 
 FROM python:3.9-slim-buster
 WORKDIR /app
