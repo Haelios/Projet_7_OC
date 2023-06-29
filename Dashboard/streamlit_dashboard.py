@@ -1,24 +1,20 @@
 import streamlit as st
-import streamlit_extras.altex
 from streamlit_shap import st_shap
 from streamlit_extras.altex import bar_chart, scatter_chart
-from streamlit_extras.add_vertical_space import add_vertical_space
 import requests
-import time
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from numpy import radians, cos, sin
-import matplotlib.pyplot as plt
 import warnings
+from shap import summary_plot, force_plot
 warnings.filterwarnings("ignore", message=".*The 'nopython' keyword.*")
-import shap
+
 
 # API endpoint URL
 API_URL = 'http://localhost:5000/prediction'
 
 
-# client_id = 100002  # (Pour ajouter des infos et debug, sans avoir à entrer d'ID à chaque fois)
+# client_id = 100002 # (Pour ajouter des infos et debug, sans avoir à entrer d'ID à chaque fois)
 
 options = st.sidebar.radio('Détails', options=['Accueil', 'Feature Importance', 'Comparaisons', 'Analyse Bivariée'])
 
@@ -92,13 +88,13 @@ def feature_imp():
     expected_value = st.session_state.response.json()['expected_val']
 
     # Création du summary plot de feature importance globale
-    fig2 = shap.summary_plot(np.array(shap_values), all_data,
+    fig2 = summary_plot(np.array(shap_values), all_data,
                              feature_names=all_data.columns, plot_type='bar', max_display=7)
     st.header("Données les plus importantes pour le modèle")
     st_shap(fig2, width=1000)
 
     # Création du force plot de feature importance locale
-    fig3 = shap.force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
+    fig3 = force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
     st.header("Influence des données sur votre score")
     st_shap(fig3, width=900)
 
