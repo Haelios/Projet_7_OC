@@ -22,17 +22,18 @@
             ],
             "environment": [],
             "mountPoints": [],
-            "volumesFrom": []
-        }
-    ],
-     "logConfiguration": {
+            "volumesFrom": [],
+             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
                     "awslogs-group": "awslogs-wordpress",
                     "awslogs-region": "eu-west-3",
                     "awslogs-stream-prefix": "awslogs-example"
-                },
+                }
+            }
+        }
+    ],
     "family": "sample-fargate",
     "networkMode": "awsvpc",
     "revision": 1,
