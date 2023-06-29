@@ -27,7 +27,7 @@
                 "logDriver": "awslogs"
                 }
             }
-        }
+        
     ],
     "family": "sample-fargate",
     "networkMode": "awsvpc",
