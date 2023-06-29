@@ -1,17 +1,10 @@
-import io
-import string
-import time
-import gc
-import os
-import numpy as np
 import pandas as pd
-from contextlib import contextmanager
 from flask import Flask, jsonify, request
-import lightgbm as lgb
 import joblib
 import warnings
-warnings.filterwarnings("ignore", message=".*The 'nopython' keyword.*")
 import shap
+
+warnings.filterwarnings("ignore", message=".*The 'nopython' keyword.*")
 
 app = Flask(__name__)
 
@@ -19,7 +12,8 @@ app = Flask(__name__)
 class API:
 
     def __init__(self):
-        self.data = pd.read_csv('Data/df_train.csv')
+        self.data_train = pd.read_csv('Data/df_train.csv')
+        self.data_test = pd.read_csv('Data/df_test.csv')
         self.model = joblib.load('models/lgb_opti.pkl')
 
     def score(self):
@@ -29,7 +23,7 @@ class API:
         :param index: Index de la ligne correspondant à l'identifiant entré par l'utilisateur.
         """
 
-        score_client = self.model.predict_proba(self.data.drop(['TARGET', 'SK_ID_CURR'], axis=1))[:, 1].tolist()
+        score_client = self.model.predict_proba(self.data_test.drop(['TARGET', 'SK_ID_CURR'], axis=1))[:, 1].tolist()
         return score_client
 
     def prediction(self):
@@ -37,7 +31,7 @@ class API:
         Retourne le résultat de la demande de tous les prêts. Ce résultat se trouve dans la colonne 'TARGET' du
         dataset. 0 = client accepté, 1 = client refusé
         """
-        predict_client = self.data['TARGET'].tolist()
+        predict_client = self.model.predict(self.data_test.drop(['TARGET','SK_ID_CURR'], axis=1)).tolist()
         return predict_client
 
     def feature_importance(self, index):
@@ -47,10 +41,10 @@ class API:
         :param index: Position du client dans le dataset
         :return: Retourne les infos nécessaires à la création du graph.
         """
-        explainer = shap.TreeExplainer(self.model, self.data.drop(['TARGET', 'SK_ID_CURR'], axis=1),
+        explainer = shap.TreeExplainer(self.model, self.data_train.drop(['TARGET', 'SK_ID_CURR'], axis=1),
                                        model_output='probability')
         expected_val = explainer.expected_value
-        shap_val = explainer.shap_values(self.data.drop(['TARGET', 'SK_ID_CURR'], axis=1).iloc[index],
+        shap_val = explainer.shap_values(self.data_train.drop(['TARGET', 'SK_ID_CURR'], axis=1).iloc[index],
                                          check_additivity=False).tolist()
         return expected_val, shap_val
 
@@ -60,15 +54,15 @@ class API:
         Les variables étudiées sont les variables les plus importantes selon les features importances du modèle.
         :return: Les valeurs du client pour chaque var. La valeur moyenne pour les prêts acceptés par var.
         """
-        ext_source1_client = self.data[self.data['SK_ID_CURR'] == iden]['EXT_SOURCE_1'][0]
-        ext_source2_client = self.data[self.data['SK_ID_CURR'] == iden]['EXT_SOURCE_2'][0]
-        ext_source3_client = self.data[self.data['SK_ID_CURR'] == iden]['EXT_SOURCE_3'][0]
-        days_emp_client = -(self.data[self.data['SK_ID_CURR'] == iden]['DAYS_EMPLOYED'][0])
+        ext_source1_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_1'][0]
+        ext_source2_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_2'][0]
+        ext_source3_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_3'][0]
+        days_emp_client = -(self.data_test[self.data_test['SK_ID_CURR'] == iden]['DAYS_EMPLOYED'][0])
 
-        ext_source1_mean = self.data[self.data['TARGET'] == 0]['EXT_SOURCE_1'].mean()
-        ext_source2_mean = self.data[self.data['TARGET'] == 0]['EXT_SOURCE_2'].mean()
-        ext_source3_mean = self.data[self.data['TARGET'] == 0]['EXT_SOURCE_3'].mean()
-        days_emp_mean = -(self.data[self.data['TARGET'] == 0]['DAYS_EMPLOYED'].mean())
+        ext_source1_mean = self.data_train[self.data_train['TARGET'] == 0]['EXT_SOURCE_1'].mean()
+        ext_source2_mean = self.data_train[self.data_train['TARGET'] == 0]['EXT_SOURCE_2'].mean()
+        ext_source3_mean = self.data_train[self.data_train['TARGET'] == 0]['EXT_SOURCE_3'].mean()
+        days_emp_mean = -(self.data_train[self.data_train['TARGET'] == 0]['DAYS_EMPLOYED'].mean())
 
         ext_sources = [ext_source1_client, ext_source2_client, ext_source3_client,
                        ext_source1_mean, ext_source2_mean, ext_source3_mean]
@@ -79,9 +73,9 @@ class API:
         """
         :return:
         """
-        ext1 = self.data['EXT_SOURCE_1'].tolist()
-        ext2 = self.data['EXT_SOURCE_2'].tolist()
-        ext3 = self.data['EXT_SOURCE_3'].tolist()
+        ext1 = self.data_test['EXT_SOURCE_1'].tolist()
+        ext2 = self.data_test['EXT_SOURCE_2'].tolist()
+        ext3 = self.data_test['EXT_SOURCE_3'].tolist()
         return [ext1, ext2, ext3]
 
     def get_client_data(self, input_id):
@@ -92,17 +86,17 @@ class API:
         :return: Dictionnaire comprenant les données.
         """
 
-        if input_id not in self.data['SK_ID_CURR']:
+        if input_id not in self.data_test['SK_ID_CURR'].tolist():
             return jsonify(input_id, {'error': "La requête a échoué, votre saisie est incorrecte."})
         else:
             # Prendre l'index du dataset correspondant à l'id entré
-            ind = self.data[self.data['SK_ID_CURR'] == input_id].index
+            ind = self.data_test[self.data_test['SK_ID_CURR'] == input_id].index
 
             # Données nécessaires pour le Force Plot de feature importance
-            all_data_columns = self.data.columns.tolist()
+            all_data_columns = self.data_test.columns.tolist()
             all_data_columns.remove('TARGET')
             all_data_columns.remove('SK_ID_CURR')
-            all_data_values = self.data.iloc[ind][all_data_columns].values.tolist()
+            all_data_values = self.data_test.iloc[ind][all_data_columns].values.tolist()
             expected_value, shap_values = self.feature_importance(ind)
 
             # Calculer le résultat de la demande de prêt
