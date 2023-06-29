@@ -1,5 +1,6 @@
 {
     "taskDefinitionArn": "arn:aws:ecs:eu-west-3:924671199804:task-definition/sample-fargate:1",
+    "LogDriver" : "awslogs",
     "containerDefinitions": [
         {
             "name": "fargate-app",
@@ -52,7 +53,4 @@
     "registeredBy": "arn:aws:iam::924671199804:root",
     "executionRoleArn": "arn:aws:iam::924671199804:role/ecsTaskExecutionRole",
     "tags": []
-}
-{
-  "LogDriver" : awslogs
 }
