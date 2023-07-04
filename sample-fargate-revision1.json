@@ -14,10 +14,6 @@
                 }
             ],
             "essential": true,
-            "entryPoint": [
-                "sh",
-                "-c"
-            ],
             "environment": [],
             "mountPoints": [],
             "volumesFrom": [],
