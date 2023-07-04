@@ -1,3 +1,4 @@
+pip
 Flask==2.3.2
 joblib==1.3.0
 altair==4.2.2
