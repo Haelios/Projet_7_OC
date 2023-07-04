@@ -15,6 +15,6 @@ RUN pip3 install -r requirements.txt
 WORKDIR /app
 COPY API/lgb_opti.pkl API/spark_api.py ./
 
-EXPOSE 5000
+EXPOSE 80
 
 CMD ["python", "spark_api.py"]
