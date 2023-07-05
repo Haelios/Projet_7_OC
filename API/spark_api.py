@@ -12,9 +12,9 @@ app = Flask(__name__)
 class API:
 
     def __init__(self):
-        self.data_train = pd.read_csv('Data/df_train_sample.csv')
-        self.data_test = pd.read_csv('Data/df_test_sample.csv')
-        self.model = joblib.load('Data/lgb_opti.pkl')
+        self.data_train = pd.read_csv('df_train_sample.csv')
+        self.data_test = pd.read_csv('df_test_sample.csv')
+        self.model = joblib.load('lgb_opti.pkl')
 
     def score(self):
         """
