@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
-
+RUN apt-get install libgomp1
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
