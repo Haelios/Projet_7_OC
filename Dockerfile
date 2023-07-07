@@ -12,7 +12,9 @@ ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get -y install curl
-RUN apt-get install libgomp1
+RUN apt-get install glibc
+
+
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
