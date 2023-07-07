@@ -10,8 +10,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 
-RUN sudo apt-get update -y
-RUN sudo apt-get install -y libgomp1
+RUN apt-get update -y
+RUN apt-get install -y libgomp1
 
 
 COPY requirements.txt .
