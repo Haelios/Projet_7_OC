@@ -10,9 +10,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
-RUN apt-get -y install curl
-RUN apt-get install glibc
+RUN sudo apt-get update -y
+RUN sudo apt-get install -y libgomp1
 
 
 COPY requirements.txt .
