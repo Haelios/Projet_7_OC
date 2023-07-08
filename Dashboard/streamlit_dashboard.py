@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore", message=".*The 'nopython' keyword.*")
 
 
 # API endpoint URL
-API_URL = 'http://13.38.19.179:5000/prediction'
+API_URL = 'http://52.47.202.69:5000/prediction'
 
 
 # client_id = 100002 # (Pour ajouter des infos et debug, sans avoir à entrer d'ID à chaque fois)
