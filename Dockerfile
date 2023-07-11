@@ -21,6 +21,6 @@ WORKDIR /app
 COPY API/lgb_opti.pkl API/spark_api.py ./
 COPY Data/data_train_sample.csv Data/data_test_sample.csv ./
 
-EXPOSE 5000
+EXPOSE 80
 
 CMD ["python", "spark_api.py"]
