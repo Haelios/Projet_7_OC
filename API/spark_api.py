@@ -119,7 +119,7 @@ class API:
 
 
 # Chemin d'accès à la page utilisée pour la requête
-@app.route('/prediction', methods=['POST'])
+@app.route('/prediction', methods=['POST','GET'])
 def predict_loan():
     # Générer la classe
     api = API()
