@@ -117,9 +117,12 @@ class API:
                 'comp_graphs': [ext_sources, days_emp],
                 'bivar_graphs': bivars }
 
+@app.route('/')
+def home():
+    return print('Hello World')
 
 # Chemin d'accès à la page utilisée pour la requête
-@app.route('/prediction', methods=['POST','GET'])
+@app.route('/prediction', methods=['POST'])
 def predict_loan():
     # Générer la classe
     api = API()
