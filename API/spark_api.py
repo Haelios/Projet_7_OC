@@ -119,7 +119,7 @@ class API:
 
 @app.route('/')
 def home():
-    return print('Hello World')
+    return "Hello World"
 
 # Chemin d'accès à la page utilisée pour la requête
 @app.route('/prediction', methods=['POST'])
