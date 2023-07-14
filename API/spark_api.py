@@ -88,7 +88,7 @@ class API:
         """
 
         if input_id not in self.data_test['SK_ID_CURR'].tolist():
-            return jsonify(input_id, {'error': "La requête a échoué, votre saisie est incorrecte."})
+            return {'error': "La requête a échoué, votre saisie est incorrecte."}
         else:
             # Prendre l'index du dataset correspondant à l'id entré
             ind = self.data_test[self.data_test['SK_ID_CURR'] == input_id].index
@@ -111,12 +111,12 @@ class API:
             # Données pour l'affichage des graphs d'analyse bivariée
             bivars = self.bivar_graphs()
 
-        return {'index' : ind[0].tolist(),
-                'all_client': [all_data_values, all_data_columns],
-                'prediction_client': predict, 'score_client': predict_score,
-                'expected_val': expected_value, 'shap_val': shap_values,
-                'comp_graphs': [ext_sources, days_emp],
-                'bivar_graphs': bivars }
+            return {'index' : ind[0].tolist(),
+                    'all_client': [all_data_values, all_data_columns],
+                    'prediction_client': predict, 'score_client': predict_score,
+                    'expected_val': expected_value, 'shap_val': shap_values,
+                    'comp_graphs': [ext_sources, days_emp],
+                    'bivar_graphs': bivars }
 
 @app.route('/')
 def home():
@@ -135,16 +135,20 @@ def predict_loan():
     client_data = api.get_client_data(id_loan)
 
     # Renvoie la réponse contenant toutes infos nécessaires au dashboard
-    response = {'index': client_data['index'],
-                'prediction': client_data['prediction_client'],
-                'score': client_data['score_client'],
-                'shap_val': client_data['shap_val'],
-                'expected_val': client_data['expected_val'],
-                'all_client_val':  client_data['all_client'][0],
-                'all_client_col': client_data['all_client'][1],
-                'comp_graphs': client_data['comp_graphs'],
-                'bivar_graphs': client_data['bivar_graphs']
-                }
+
+    if id_loan not in api.data_test['SK_ID_CURR'].tolist():
+        response = client_data
+    else: 
+        response = {'index': client_data['index'],
+                    'prediction': client_data['prediction_client'],
+                    'score': client_data['score_client'],
+                    'shap_val': client_data['shap_val'],
+                    'expected_val': client_data['expected_val'],
+                    'all_client_val':  client_data['all_client'][0],
+                    'all_client_col': client_data['all_client'][1],
+                    'comp_graphs': client_data['comp_graphs'],
+                    'bivar_graphs': client_data['bivar_graphs']
+                    }
 
     return jsonify(response)
 
