@@ -143,36 +143,68 @@ def bivar_graphs():
     df_bivar = pd.DataFrame(zip(ext1, ext2, ext3, scores), columns = ['Ext1', 'Ext2', 'Ext3', 'Score'])
 
     st.header("Influence des sources extérieures sur les résultats")
+    df_client = pd.DataFrame(zip([ext1[index]], [ext2[index]], [ext3[index]], [scores[index]]),
+                                 columns = ['Ext1', 'Ext2', 'Ext3', 'Score']).fillna(0)
 
-    scatter_chart(
-        data = df_bivar,
+    # Ext1 vs Ext2
+    fig1 = alt.Chart(df_bivar).mark_point(filled=True).encode(
         x="Ext1",
         y="Ext2",
-        color="Score:Q",
-        title="Graphique poour EXT SOURCE 1 et 2",
-        height = 600,
-        width = 600
+        color="Score:Q").properties(
+        width = 800,
+        height=800,
+        title="Graphique pour EXT SOURCE 1 et 2"
     )
 
-    scatter_chart(
-        data=df_bivar,
+    fig2 = alt.Chart(df_client).mark_circle(color='red', size=150).encode(
+        x="Ext1",
+        y="Ext2").properties(
+        width=800,
+        height=800
+    )
+    fig = fig1 + fig2
+
+    st.altair_chart(fig)
+
+    # Ext2 vs Ext3
+    fig1 = alt.Chart(df_bivar).mark_point(filled=True).encode(
         x="Ext2",
         y="Ext3",
-        color="Score:Q",
-        title="Graphique poour EXT SOURCE 2 et 3",
-        height=600,
-        width=600
+        color="Score:Q").properties(
+        width=800,
+        height=800,
+        title="Graphique poour EXT SOURCE 2 et 3"
     )
 
-    scatter_chart(
-        data=df_bivar,
-        x="Ext3",
-        y="Ext1",
-        color="Score:Q",
-        title="Graphique poour EXT SOURCE 1 et 3",
-        height=600,
-        width=600
+    fig2 = alt.Chart(df_client).mark_circle(color='red', size=150).encode(
+        x="Ext2",
+        y="Ext3").properties(
+        width=800,
+        height=800
     )
+    fig = fig1 + fig2
+
+    st.altair_chart(fig)
+
+    # Ext1 vs Ext3
+    fig1 = alt.Chart(df_bivar).mark_point(filled=True).encode(
+        x="Ext1",
+        y="Ext3",
+        color="Score:Q").properties(
+        width=800,
+        height=800,
+        title="Graphique pour EXT SOURCE 1 et 3"
+    )
+
+    fig2 = alt.Chart(df_client).mark_circle(color='red', size=150).encode(
+        x="Ext1",
+        y="Ext3").properties(
+        width=800,
+        height=800
+    )
+    fig = fig1 + fig2
+
+    st.altair_chart(fig)
 
 
 if 'response' not in st.session_state:
