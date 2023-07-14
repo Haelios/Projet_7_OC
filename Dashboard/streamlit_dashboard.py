@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore", message=".*The 'nopython' keyword.*")
 
 
 # API endpoint URL
-API_URL = 'http://52.47.202.69:5000/prediction'
+API_URL = 'BalancerTest-1660040751.eu-west-3.elb.amazonaws.com/prediction'
 
 
 # client_id = 100002 # (Pour ajouter des infos et debug, sans avoir à entrer d'ID à chaque fois)
