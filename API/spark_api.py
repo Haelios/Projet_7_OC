@@ -54,10 +54,10 @@ class API:
         Les variables étudiées sont les variables les plus importantes selon les features importances du modèle.
         :return: Les valeurs du client pour chaque var. La valeur moyenne pour les prêts acceptés par var.
         """
-        ext_source1_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_1'][0]
-        ext_source2_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_2'][0]
-        ext_source3_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_3'][0]
-        days_emp_client = -(self.data_test[self.data_test['SK_ID_CURR'] == iden]['DAYS_EMPLOYED'][0])
+        ext_source1_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_1'].item()
+        ext_source2_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_2'].item()
+        ext_source3_client = self.data_test[self.data_test['SK_ID_CURR'] == iden]['EXT_SOURCE_3'].item()
+        days_emp_client = -(self.data_test[self.data_test['SK_ID_CURR'] == iden]['DAYS_EMPLOYED'].item())
 
         ext_source1_mean = self.data_train[self.data_train['TARGET'] == 0]['EXT_SOURCE_1'].mean()
         ext_source2_mean = self.data_train[self.data_train['TARGET'] == 0]['EXT_SOURCE_2'].mean()
