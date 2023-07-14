@@ -105,7 +105,7 @@ def comparison_graphs():
     ext_values = st.session_state.response.json()['comp_graphs'][0]
     ext_feature = ['Ext1', 'Ext2', 'Ext3', 'Ext1', 'Ext2', 'Ext3']
     ext_clients = ['client', 'client', 'client', 'mean', 'mean', 'mean']
-    df_ext = pd.DataFrame([ext_values, ext_feature, ext_clients], index= ['values', 'feature', 'clients']).T
+    df_ext = pd.DataFrame([ext_values, ext_feature, ext_clients], index= ['values', 'feature', 'clients']).T.fillna(0)
 
     bar_chart(
         data=df_ext,
