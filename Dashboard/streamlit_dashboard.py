@@ -124,6 +124,8 @@ def comparison_graphs():
     days_clients = ['client', 'mean']
     df_days = pd.DataFrame([days_values, days_feat, days_clients], index=['values', 'feature', 'clients']).T
 
+    st.dataframe(df_days)
+
     bar_chart(
         data=df_days,
         x="clients",
