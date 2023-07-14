@@ -121,7 +121,7 @@ def comparison_graphs():
     days_values = st.session_state.response.json()['comp_graphs'][1]
     days_feat = ['Days Employed']
     days_clients = ['client', 'mean']
-    df_days = pd.DataFrame([days_values, days_feat, days_clients], index=['values', 'feature', 'clients']).T
+    df_days = pd.DataFrame([days_values, days_feat, days_clients], index=['values', 'feature', 'clients']).T.fillna(0)
     
     bar_chart(
         data=df_days,
