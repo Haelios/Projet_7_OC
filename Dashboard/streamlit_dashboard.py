@@ -1,4 +1,4 @@
-import streamlit as st
+orimport streamlit as st
 from streamlit_shap import st_shap
 from streamlit_extras.altex import bar_chart, scatter_chart
 import requests
@@ -39,8 +39,8 @@ def accueil():
     # Vérifier que la requête a bien fonctionné
     if st.session_state.response.status_code == 200:
         # Vérifier que la réponse contient des données
-        if len(st.session_state.response.text) == 0:
-            return "La requête a échoué, veuillez vérifier votre saisie."
+        if 'error' in st.session_state.response.json().keys():
+            st.write(st.session_state.response.json()['error'])
         else:
             index = st.session_state.response.json()['index']
             client_prediction = st.session_state.response.json()['prediction'][index]
