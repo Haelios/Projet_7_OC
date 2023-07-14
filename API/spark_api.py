@@ -20,8 +20,7 @@ class API:
     def score(self):
         """
         Calcule le score client, qui correspond à la probabilité que le client ne rembourse pas le prêt,
-        calculée grâce à notre modèle.
-        :param index: Index de la ligne correspondant à l'identifiant entré par l'utilisateur.
+        calculée grâce à notre modèle pour tous les clients.
         """
 
         score_client = self.model.predict_proba(self.data_test.drop(['TARGET', 'SK_ID_CURR'], axis=1))[:, 1].tolist()
@@ -45,7 +44,7 @@ class API:
         explainer = shap.TreeExplainer(self.model, self.data_train.drop(['TARGET', 'SK_ID_CURR'], axis=1),
                                        model_output='probability')
         expected_val = explainer.expected_value
-        shap_val = explainer.shap_values(self.data_train.drop(['TARGET', 'SK_ID_CURR'], axis=1).iloc[index],
+        shap_val = explainer.shap_values(self.data_test.drop(['TARGET', 'SK_ID_CURR'], axis=1).iloc[index],
                                          check_additivity=False).tolist()
         return expected_val, shap_val
 
@@ -72,7 +71,9 @@ class API:
 
     def bivar_graphs(self):
         """
-        :return:
+        Renvoie les valeurs pour les 3 variables EXT SOURCE afin d'étudier les scores obtenus
+        avec des valeurs élevées de ces features
+        :return: 3 listes contenant toutes les valeurs du dataset
         """
         ext1 = self.data_test['EXT_SOURCE_1'].tolist()
         ext2 = self.data_test['EXT_SOURCE_2'].tolist()
