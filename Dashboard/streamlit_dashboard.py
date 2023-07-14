@@ -89,7 +89,7 @@ def feature_imp():
 
     # Création du summary plot de feature importance globale
     st.header("Données les plus importantes pour le modèle")
-    st.image('feature_imp_glob.png', width=900)
+    st.image('Data/feature_imp_glob.png', width=900)
 
     # Création du force plot de feature importance locale
     fig3 = force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
