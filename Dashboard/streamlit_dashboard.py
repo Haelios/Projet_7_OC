@@ -95,7 +95,7 @@ def feature_imp():
 
     # Création du force plot de feature importance locale
     fig3 = force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
-    st.header("Influence des données sur votre score")
+    st.header("Influence de ces données sur votre score")
     st_shap(fig3, width=900)
 
 
@@ -112,7 +112,7 @@ def comparison_graphs():
         y="values:Q",
         color="clients:N",
         column="feature:N",
-        title="Comparaison score client et moyenne des prêts validés : External Sources",
+        title="External Sources : Comparaison entre vos données et les prêts accordés",
         width=150,
         use_container_width=False,
     )
@@ -126,7 +126,7 @@ def comparison_graphs():
         data=df_days,
         x="clients",
         y="values",
-        title="Comparaison score client et moyenne des prêts validés : Days Employed",
+        title="Days employed : Comparaison entre vos données et les prêts accordés",
         width=500,
         height=500,
         color = "clients"
@@ -142,12 +142,14 @@ def bivar_graphs():
     target = st.session_state.response.json()['prediction']
     df_bivar = pd.DataFrame(zip(ext1, ext2, ext3, scores), columns = ['Ext1', 'Ext2', 'Ext3', 'Score'])
 
+    st.header("Influence des sources extérieures sur les résultats")
+
     scatter_chart(
         data = df_bivar,
         x="Ext1",
         y="Ext2",
         color="Score:Q",
-        title="A beautiful scatter chart",
+        title="Graphique poour EXT SOURCE 1 et 2",
         height = 600,
         width = 600
     )
@@ -157,7 +159,7 @@ def bivar_graphs():
         x="Ext2",
         y="Ext3",
         color="Score:Q",
-        title="A beautiful scatter chart",
+        title="Graphique poour EXT SOURCE 2 et 3",
         height=600,
         width=600
     )
@@ -167,7 +169,7 @@ def bivar_graphs():
         x="Ext3",
         y="Ext1",
         color="Score:Q",
-        title="A beautiful scatter chart",
+        title="Graphique poour EXT SOURCE 1 et 3",
         height=600,
         width=600
     )
