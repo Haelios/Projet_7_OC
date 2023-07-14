@@ -20,9 +20,9 @@ options = st.sidebar.radio('Détails', options=['Accueil', 'Feature Importance',
 
 
 def get_response():
-    st.title('Dashboard demande de prêt')
+    st.title('Retrouvez ici les résultats de votre demande de prêt')
     id_widget = st.empty()
-    id_client = id_widget.number_input("Enter your client ID")
+    id_client = id_widget.number_input("Veuillez entrer votre identifiant.")
     if id_client :
         id_widget.empty()
         resp = requests.post(API_URL, json={'loan_id': id_client})
@@ -46,7 +46,7 @@ def accueil():
             client_prediction = st.session_state.response.json()['prediction'][index]
 
             # Afficher le résultat de la demande
-            st.subheader('Loan Prediction')
+            st.subheader('Résultat de votre demande de prêt')
             if client_prediction == 0:
                 st.write('Votre prêt a été accepté !')
             else:
@@ -63,7 +63,7 @@ def accueil():
                             mode = "gauge+number",
                             value = (1-score)*100,
                             domain = {'x': [0, 1], 'y': [0, 1]},
-                            title = {'text': "Score prêt", 'font': {'size': 24}},
+                            title = {'text': "Votre Score", 'font': {'size': 24}},
                             gauge = {
                                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
                                 'bar': {'color': color, 'thickness': 1},
@@ -75,6 +75,7 @@ def accueil():
                                     'value': 50}}))
 
             st.plotly_chart(fig)
+            st.write("Vous devez obtenir un score d'au moins 50 pour être éligible pour un prêt.")
     else:
         st.error('Error retrieving loan prediction. Please try again.')
         st.text(st.session_state.response.status_code)
