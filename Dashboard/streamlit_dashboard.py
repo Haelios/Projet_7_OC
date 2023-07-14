@@ -46,7 +46,7 @@ def accueil():
             client_prediction = st.session_state.response.json()['prediction'][index]
 
             # Afficher le résultat de la demande
-            st.subheader('Résultat de votre demande de prêt')
+            st.subheader('Vos résultats :')
             if client_prediction == 0:
                 st.write('Votre prêt a été accepté !')
             else:
@@ -75,7 +75,8 @@ def accueil():
                                     'value': 50}}))
 
             st.plotly_chart(fig)
-            st.write("Vous devez obtenir un score d'au moins 50 pour être éligible pour un prêt.")
+            if score > 0.5 :
+                st.write("Vous devez obtenir un score d'au moins 50 pour être éligible pour un prêt.")
     else:
         st.error('Error retrieving loan prediction. Please try again.')
         st.text(st.session_state.response.status_code)
@@ -89,7 +90,7 @@ def feature_imp():
     expected_value = st.session_state.response.json()['expected_val']
 
     # Création du summary plot de feature importance globale
-    st.header("Données les plus importantes pour le modèle")
+    st.header("Les informations les plus importantes pour calculer votre score")
     st.image('Data/feature_imp_glob.png', width=900)
 
     # Création du force plot de feature importance locale
