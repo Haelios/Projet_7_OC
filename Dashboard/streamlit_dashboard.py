@@ -106,6 +106,8 @@ def comparison_graphs():
     ext_clients = ['client', 'client', 'client', 'mean', 'mean', 'mean']
     df_ext = pd.DataFrame([ext_values, ext_feature, ext_clients], index= ['values', 'feature', 'clients']).T
 
+    st.dataframe(df_ext)
+
     bar_chart(
         data=df_ext,
         x="clients:N",
