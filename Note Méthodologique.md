@@ -67,4 +67,15 @@ Ensuite, on peut aller voir pour chaque individu les features importances locale
 Evidemment on retrouvera ici majoritairement les mêmes features que globalement car elles c'est leur importance locale pour tous les individus qui fait qu'elles le sont globalement, mais cela nous permet d'analyser pour chaque client quels sont les éventuels points faibles et forts de son dossier, afin qu'en obtenant ses résultats il puisse comprendre les raisons de ceux-ci et les points forts et faibles dans sa demande de prêt.
 
 
+### Limites et possibles améliorations
+
+J'ai évidemment dans ce projet rencontré des problèmes que j'ai du contourner, dont certains que j'ai déjà mentionné dans cette note. Cela a évidemment impacté les performances et avec plus de temps ou de moyens matériels il serait certainement possible d'améliorer nos résultats. La première chose et la plus évidente est évidemment le feature engineering, que j'ai repris d'un notebook existant, qui est plutôt complète et qui m'a permis d'avancer rapidement sur la suite sans trop m'épancher dessus, mais il est certainement possible d'obtenir quelque chose d'encore meilleur à ce niveau. Ensuite, comme je l'ai précisé plus tôt, j'ai du procéder à l'optimisation de mon modèle sur un échantillon du dataset car les temps de traitement pour la cross validation étaient bien trop élevés sinon, et on pourrait donc sûrement améliorer notre modèle en traitant directement tout le dataset à l'aide d'un peu plus de puissance de calcul. D'autre part, le calcul du score métier ne prends en compte que les pertes potentielles, mais il me paraîtrait également pertinent d'ajouter à cela le gain engendré par un prêt accordé à un bon client, ce qui pourrait pousser le modèle à valider plus de prêts malgré les risques. Encore faudrait-il pour cela évaluer le coefficient d'un tel gain, comme on l'a fait avec le ratio 1:10 pour les pertes.
+Enfin, une limite qui me paraît importante notamment dans la transmission des données aux clients, est le fait que l'on possède quasiment aucune information sur ce que représentes ces EXT_SOURCE, alors qu'elles sont les variables les plus importantes pour notre modèle et donc les plus importantes dans la décision finale. Il serait donc intéressant d'avoir plus d'informations sur cela notamment pour transmettre au client par la suite.
+
+
+
+### Analyse du Data Drift
+
+
+
 
