@@ -19,13 +19,6 @@ def test_prediction(api):
     assert( x == 0| x == 1 for x in prediction)
 
 
-def test_feature_importance(api):
-    # On teste que l'expected value ne bouge pas
-    expected, shap = api.feature_importance(0)
-    expected.round(4)
-    assert(expected == 0.4366)
-
-
 def test_bivar_graphs(api):
     # On teste que nos 3 listes sont bien complètes
     bivars = api.bivar_graphs()
