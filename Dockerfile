@@ -19,7 +19,7 @@ RUN pip3 install -r requirements.txt
 
 WORKDIR /app
 COPY API/lgb_opti.pkl API/spark_api.py ./
-COPY Data/data_train_sample.csv Data/data_test_sample.csv ./
+COPY Data/data_train_sample.csv Data/data_test_sample.csv Data/feature_imp_glob.png ./
 
 EXPOSE 80
 
