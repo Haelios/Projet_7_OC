@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_shap import st_shap
-from streamlit_extras.altex import bar_chart, scatter_chart
+from streamlit_extras.altex import bar_chart
+import altair as alt
 import requests
 import pandas as pd
 import numpy as np
