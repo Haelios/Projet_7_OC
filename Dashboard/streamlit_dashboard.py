@@ -88,10 +88,8 @@ def feature_imp():
     expected_value = st.session_state.response.json()['expected_val']
 
     # Création du summary plot de feature importance globale
-    fig2 = summary_plot(np.array(shap_values), all_data,
-                             feature_names=all_data.columns, plot_type='bar', max_display=7)
     st.header("Données les plus importantes pour le modèle")
-    st_shap(fig2, width=1000)
+    st.image('feature_imp_glob.png', width=900)
 
     # Création du force plot de feature importance locale
     fig3 = force_plot(expected_value, np.array(shap_values), all_data, feature_names=all_data.columns)
@@ -105,8 +103,6 @@ def comparison_graphs():
     ext_feature = ['Ext1', 'Ext2', 'Ext3', 'Ext1', 'Ext2', 'Ext3']
     ext_clients = ['client', 'client', 'client', 'mean', 'mean', 'mean']
     df_ext = pd.DataFrame([ext_values, ext_feature, ext_clients], index= ['values', 'feature', 'clients']).T
-
-    st.dataframe(df_ext)
 
     bar_chart(
         data=df_ext,
@@ -123,9 +119,7 @@ def comparison_graphs():
     days_feat = ['Days Employed']
     days_clients = ['client', 'mean']
     df_days = pd.DataFrame([days_values, days_feat, days_clients], index=['values', 'feature', 'clients']).T
-
-    st.dataframe(df_days)
-
+    
     bar_chart(
         data=df_days,
         x="clients",
