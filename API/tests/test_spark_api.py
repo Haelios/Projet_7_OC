@@ -1,4 +1,4 @@
-from API.spark_api import API
+from spark_api import API
 import pytest
 
 # Tests des méthodes définies dans la classe
