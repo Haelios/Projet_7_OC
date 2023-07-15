@@ -1,4 +1,4 @@
-from spark_api import API
+from app import API
 import pytest
 
 
