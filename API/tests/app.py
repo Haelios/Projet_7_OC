@@ -155,3 +155,4 @@ def create_app(config):
                       }
   
       return jsonify(response)
+  return app
