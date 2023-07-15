@@ -74,6 +74,5 @@ Enfin, une limite qui me paraît importante notamment dans la transmission des d
 
 ### Analyse du Data Drift
 
-
-
+Pour analyser un éventuel drift entre nos données d'entraînement et de production, j'ai utilisé la librairie evidently. On peut y utiliser des fonctions qui font une analyse complète en comparant les deux jeux de données, en appliquant pour chaque variable un test statistique adapté. Ainsi on peut déterminer si les distributions pour chaque variable sont suffisamment proches ou si les nouvelles valeurs ont tendances à s'éloigner des données d'entraînement. D'après le rapport d'analyse que j'ai obtenu en appliquant ceci aux jeux de données initiaux, je peux déduire que le data drift est globalement très faible pour nos données, avec seulement 9 variables sur 120 qui présentent du drift, dont seulement 4 avec un drift score supérieur à 0.2. On peut donc conclure que le data drift n'est pas un problème pour nos données dans le cas présent, mais il reste important de continuer d'y faire attention en cas d'ajout de nouvelles données car cela pourrait évoluer dans le temps. On pourrait alors rajouter des entrées plus récentes dans notre set d'entraînement afin de réactualiser les données et potentiellement réduire ce drift.
 
