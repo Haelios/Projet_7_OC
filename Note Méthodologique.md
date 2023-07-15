@@ -6,9 +6,7 @@
 
 ### Entraînement du modèle :
 
-Dans l'objectif de répondre à la problématique de notre projet qui consistait à prédire si, pour un client avec des informations données,
-on accepte ou non sa demande de prêt, il nous fallait évidemment utiliser un modèle de machine learning. Ce modèle sera en effet capable d'apprendre des données
-préexistantes, et d'utiliser ces informations pour prédire la probabilité qu'un nouveau client rembourse ou non son prêt, et d'ainsi accepter ou non sa demande.
+Dans l'objectif de répondre à la problématique de notre projet qui consistait à prédire si, pour un client avec des informations données, on accepte ou non sa demande de prêt, il nous fallait évidemment utiliser un modèle de machine learning. Ce modèle sera en effet capable d'apprendre des données préexistantes, et d'utiliser ces informations pour prédire la probabilité qu'un nouveau client rembourse ou non son prêt, et d'ainsi accepter ou non sa demande.
 
 Pour entraîner le modèle, j'avais accès à une base de données, contenant pour chaque client qui fait une demande de prêt, des informations personnelles, sur sa vie et sa situation, ainsi que des données historiques sur ses éventuelles précédentes demande de prêt. Ces données étaient réparties sur plusieurs tables, liées entre elles notamment par l'identifiant du prêt. Afin d'entraîner le modèle il fallait donc commencer par traiter ces données afin de les regrouper en un seul dataset contenant un maximum d'informations sur chaque client. J'ai pour cela récupéré un feature engineering existant comme conseillé dans le descriptif du projet, qui traite chaque table individuellement en appliquant de nombreuses agrégations afin de regrouper chaque demande de prêt sur une seule ligne. On obtient donc ainsi de nombreuses nouvelles colonnes, avec des données synthétisées à partir des données existantes. On rejoint enfin toutes ces nouvelles tables ensemble afin d'obtenir un dataset unique, contenant toutes les informations pour chaque client et permettant un entraînement optimal du modèle.
 
